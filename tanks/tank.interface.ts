@@ -9,6 +9,8 @@ export interface BaseTank {
     age?: number;
 }
 
-export interface Tank {
+export interface Tank extends BaseTank {
     id: number;
 }
+
+export type TankKeys = keyof Tank;
