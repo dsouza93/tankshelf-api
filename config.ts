@@ -10,5 +10,10 @@ export const config = {
     },
     server: {
         PORT: process.env.PORT
+    },
+    auth: {
+        PASSPORT_SESSION_SECRET: process.env.PASSPORT_SESSION_SECRET,
+        GOOG_CLIENT_ID: process.env.GOOG_CLIENT_ID,
+        GOOG_CLIENT_SECRET: process.env.GOOG_CLIENT_SECRET
     }
 }

@@ -30,7 +30,7 @@ export const create = async(newTank: BaseTank): Promise<Tank | null> => {
     const id = new Date().valueOf();
     
     const result = await db.pool.query("INSERT INTO tanks (id, name, description, waterType, image, stream, age) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                                                    [id, newTank.name, newTank.description, newTank.waterType, newTank.image, newTank.stream, newTank.age]);
+        [id, newTank.name, newTank.description, newTank.waterType, newTank.image, newTank.stream, newTank.age]);
     
     if(result[0].affectedRows === 1) {
         const newTank = await find(id);
