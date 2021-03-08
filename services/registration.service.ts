@@ -8,13 +8,13 @@ export const findOrCreate = async(profile: Profile) => {
         try {
             console.log(`Creating new user with email: ${profile._json.email}`);
             const newUser = await UserService.create(profile);
-            console.log(newUser);
             return newUser;
         } catch(e) {
             throw e;
         }
     } else {
-        console.error(`A user with the email: ${profile._json.email} already exists.  Please try another email.`);
+        console.log(`User with email: ${profile._json.email} already exists.`)
+        return userExists[0];
     }
 }
 

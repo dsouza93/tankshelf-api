@@ -7,7 +7,8 @@ import { config } from './config';
 import { tanksRouter } from './tanks/tanks.router';
 import { authRouter } from './auth/auth.router';
 import { isLoggedIn } from './middleware/auth.middleware';
-const cookieSession = require('cookie-session');
+// const cookieSession = require('cookie-session');
+const session = require('express-session');
 
 if (!config.server.PORT) {
     process.exit();
@@ -16,16 +17,25 @@ if (!config.server.PORT) {
 const PORT: number = parseInt(config.server.PORT as string, 10);
 
 const app = express();
-
 // Setup cookie session
-app.use(cookieSession({
-    name: 'TankShelf-session',
-    keys: [config.auth.PASSPORT_SESSION_SECRET]
+app.use(session({
+    name: 'tankSesh',
+    resave: false,
+    saveUninitialized: false,
+    secret: config.auth.PASSPORT_SESSION_SECRET
 }));
+// app.use(cookieSession({
+//     name: 'TankShelf-session',
+//     keys: [config.auth.PASSPORT_SESSION_SECRET]
+// }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: "GET,HEAD,PUT,POST,DELETE",
+    credentials: true
+}));
 app.use(bodyParser.json());
 
 app.use("/api/tanks/", tanksRouter);

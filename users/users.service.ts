@@ -1,3 +1,4 @@
+import { NextFunction } from 'express';
 import moment from 'moment';
 import { Profile } from 'passport-google-oauth20';
 import { User } from './user.interface';

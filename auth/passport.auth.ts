@@ -14,11 +14,19 @@ passport.use(
         callbackURL: "http://localhost:7000/auth/google/redirect"
     },
     (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
-        // console.log("access token: ", accessToken);
-        // console.log(profile);
-        // console.log(profile._json.email)
-        RegService.findOrCreate(profile);
-        done(null, profile);
+        try {
+            // console.log("access token: ", accessToken);
+            // console.log("refresh token: ", refreshToken);
+            // console.log("profile: ", profile);
+
+            // console.log(profile);
+            // console.log(profile._json.email)
+            RegService.findOrCreate(profile);
+            done(null, profile);
+        } catch(e) {
+            done(e, false, e.message);
+        }
+        
     })
 );
 
