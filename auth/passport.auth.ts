@@ -15,14 +15,11 @@ passport.use(
     },
     (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
         try {
-            // console.log("access token: ", accessToken);
-            // console.log("refresh token: ", refreshToken);
-            // console.log("profile: ", profile);
+            RegService.findOrCreate(profile).then(user => {
+                console.log(user);
+                done(null, user);
+            });
 
-            // console.log(profile);
-            // console.log(profile._json.email)
-            RegService.findOrCreate(profile);
-            done(null, profile);
         } catch(e) {
             done(e, false, e.message);
         }

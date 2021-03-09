@@ -41,7 +41,7 @@ authRouter.get("/google", passport.authenticate('google', { scope: ["profile", "
 // Endpoint that Google login sends user to upon successful Google auth
 authRouter.get("/google/redirect", 
     passport.authenticate('google', { 
-        successRedirect: 'http://localhost:3000/profile',
+        successRedirect: 'http://localhost:3000/user/profile',
         failureRedirect: '/failed' 
     })
 );

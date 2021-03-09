@@ -40,6 +40,7 @@ app.use(bodyParser.json());
 
 app.use("/api/tanks/", tanksRouter);
 app.use("/auth/", authRouter);
+app.use("/user/", userRouter);
 
 app.get('/failed', (req: Request, res: Response) => res.send('You failed to login'));
 app.get('/good', isLoggedIn, (req: Request, res: Response) => res.send(`Welcome ${req.user.displayName}`));
