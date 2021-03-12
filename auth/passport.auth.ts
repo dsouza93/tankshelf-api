@@ -14,6 +14,7 @@ passport.use(
         callbackURL: "http://localhost:7000/auth/google/redirect"
     },
     (accessToken: string, refreshToken: string, profile: Profile, done: VerifyCallback) => {
+        console.log(`inside passport Google OAuth Strategy callback, looking for or creating user then serializing...`)
         try {
             RegService.findOrCreate(profile).then(user => {
                 console.log(user);
@@ -29,9 +30,12 @@ passport.use(
 
 
 passport.serializeUser(function(user: Express.User, done) {
-    done(null, user);
+    console.log(`inside seralizeUser`)
+    console.log(user.id);
+    done(null, user.id);
   });
   
-  passport.deserializeUser(function(user: Express.User, done) {
+  passport.deserializeUser(function(userId: number, done) {
+      
       done(null, user);
   });
