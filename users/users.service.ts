@@ -10,6 +10,11 @@ export const findByEmail = async(email: string): Promise<User | null> => {
     return rows[0];
 }
 
+export const findWhere = async(col: keyof User, value: string | number): Promise<User> => {
+    const rows = await db.pool.query('SELECT * FROM users WHERE ?? = ?', [col, value]);
+    return rows[0][0];
+}
+
 export const create = async(profile: Profile) => {
     const createdAt = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     const rows = await db.pool.query('INSERT INTO users (email, first_name, last_name, display_name, created_at, updated_at, google_id) VALUES(?, ?, ?, ?, ?, ?, ?)', 

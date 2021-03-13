@@ -9,7 +9,6 @@ export const authRouter = express.Router();
 // Google OAuth Passport Routes
 // Endpoint that sends user to external Google login page
 authRouter.get("/google", passport.authenticate('google', { scope: ["profile", "email"] }), (req: Request, res: Response) => console.log(`inside /google callback: ${console.log(req.sessionID)}`));
-// authRouter.post("/google", passport.authenticate('google', { scope: ["profile", "email"] }));
 
 // Endpoint that Google login sends user to upon successful Google auth
 authRouter.get("/google/redirect", 
@@ -31,7 +30,19 @@ authRouter.get('/login', passport.authenticate("google", { scope: ["profile", "e
 
 authRouter.get('/user', isAuthenticated, (req: Request ,res: Response) => {
     console.log(`auth.router.ts /user`, req.user)
-    res.status(200).send({user: req.user});
+    if (req.user) {
+        const userData = {
+            display_name: req.user.display_name,
+            email: req.user.email,
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+        }
+        res.status(200).send(userData);
+    } else {
+        res.status(500).send({succes: false, error: "req.user not found"});
+    }
+    
+    
 });
 
 // Endpoint for successful login, get user info

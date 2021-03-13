@@ -7,7 +7,12 @@ export const findOrCreate = async(profile: Profile) => {
     if (userExists.length === 0) {
         try {
             console.log(`Creating new user with email: ${profile._json.email}`);
-            const newUser = await UserService.create(profile);
+            // const newUser = await UserService.create(profile);
+            const newUser = await UserService.create(profile)
+            .then(res => {
+                const user = UserService.findWhere("id", res.insertId)
+                return user;
+            });
             return newUser;
         } catch(e) {
             throw e;
