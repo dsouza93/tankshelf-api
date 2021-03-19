@@ -28,6 +28,15 @@ authRouter.get('/login', passport.authenticate("google", { scope: ["profile", "e
     res.send('Successfully Authenticated');
 });
 
+// Logout from Google auth endpoint
+authRouter.get('/logout', isAuthenticated, (req: Request, res: Response) => {
+    console.log(`logging out user ${req.user}`)
+    req.logout();
+    console.log('/logout is authenticated', req.isAuthenticated());
+    // res.redirect(`${process.env.FRONT_END_BASE_URL}`);
+    res.send('logged out');
+});
+
 authRouter.get('/user', isAuthenticated, (req: Request ,res: Response) => {
     console.log(`auth.router.ts /user`, req.user)
     if (req.user) {
@@ -41,34 +50,35 @@ authRouter.get('/user', isAuthenticated, (req: Request ,res: Response) => {
     } else {
         res.status(500).send({succes: false, error: "req.user not found"});
     }
-    
-    
 });
 
-// Endpoint for successful login, get user info
-authRouter.get("/login/success", (req: Request, res: Response) => {
-    if (req.user) {
-        res.json({
-            success: true,
-            message: `${req.user} successfully authenticated`,
-            user: req.user,
-            cookies: req.cookies
-        });
+authRouter.get('/loggedin', isAuthenticated, (req: Request, res: Response) => {
+    console.log(`/loggedin user is authenticated: ${req.isAuthenticated()}`);
+    console.log(req.user.display_name);
+    if(req.user) {
+    res.json({ loggedin: true });
+    } else {
+        res.json({ loggedin: false });
     }
 });
 
-// Endpoint to indicate failed login
-authRouter.get("/login/failure", (req: Request, res: Response) => {
-    res.status(401).json({
-        success: false,
-        message: "authentication failed"
-    });
-});
+// Endpoint for successful login, get user info
+// authRouter.get("/login/success", (req: Request, res: Response) => {
+//     if (req.user) {
+//         res.json({
+//             success: true,
+//             message: `${req.user} successfully authenticated`,
+//             user: req.user,
+//             cookies: req.cookies
+//         });
+//     }
+// });
 
-// Logout from Google auth endpoint
-authRouter.get('/logout', isAuthenticated, (req: Request, res: Response) => {
-    console.log(`logging out user ${req.user}`)
-    req.session = null;
-    req.logout();
-    res.send('logged out');
-});
+// Endpoint to indicate failed login
+// authRouter.get("/login/failure", (req: Request, res: Response) => {
+//     res.status(401).json({
+//         success: false,
+//         message: "authentication failed"
+//     });
+// });
+

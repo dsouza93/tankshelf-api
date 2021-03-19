@@ -7,6 +7,7 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
         console.log(`is user authenticated? ${req.isAuthenticated()}`);
         next();
     } else {
-        return console.log(`user is not Authenticated`);
+        console.log(`user is not Authenticated`)
+        res.send(401, { error: 'user not authenticated'});
     }
 }
