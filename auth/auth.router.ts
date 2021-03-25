@@ -19,8 +19,8 @@ authRouter.get("/google/redirect",
         console.log(`inside /google/redirect callback, req.session:`)
         console.log(Object.entries(req.session));
         console.log(req.sessionID);
-        console.log(req.isAuthenticated(), 'redirecting to frontend profile');
-        res.redirect('http://localhost:3000/user/profile')
+        console.log(req.isAuthenticated(), 'redirecting to frontend tanks page');
+        res.redirect(`${process.env.FRONT_END_BASE_URL}/tanks`)
     }
 );
 
