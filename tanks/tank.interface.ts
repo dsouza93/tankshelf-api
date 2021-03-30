@@ -1,9 +1,9 @@
-type WaterTypes = "freshwater" | "saltwater";
+type WaterTypes = "freshwater" | "saltwater" | "terrarium";
 
 export interface BaseTank {
     name: string;
     description: string;
-    waterType: WaterTypes;
+    type: WaterTypes;
     image: string;
     stream?: string;
     age?: number;

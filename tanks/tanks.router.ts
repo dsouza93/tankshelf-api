@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { BaseTank, Tank, TankKeys } from './tank.interface';
 import { Tanks } from './tanks.interface';
 import * as TankService from './tanks.service';
+import * as Helper from '../helper';
 
 export const tanksRouter = express.Router();
 
@@ -41,7 +42,9 @@ tanksRouter.put('/:id', async(req: Request, res: Response) => {
 // POST tanks
 tanksRouter.post('/addTank', async(req: Request, res: Response) => {
     try {
-        const tank: BaseTank = req.body;
+        console.log(req.body.data)
+        const tank: BaseTank = req.body.data;
+        console.log(tank.age);
         const newTank = await TankService.create(tank);
 
         res.status(201).json(newTank);

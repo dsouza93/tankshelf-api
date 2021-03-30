@@ -17,7 +17,7 @@ function updatedProps(tankUpdate: BaseTank) {
 
 // Find all tanks service
 export const findAll = async(): Promise<Tanks> => {
-    const rows = await db.pool.query("SELECT id, name, description, waterType, image, stream FROM tanks");
+    const rows = await db.pool.query("SELECT id, name, description, type, image, stream FROM tanks");
     return rows[0];
 }
 // Find single by id tank service
@@ -29,8 +29,8 @@ export const find = async(id:number): Promise<Tank> => {
 export const create = async(newTank: BaseTank): Promise<Tank | null> => {
     const id = new Date().valueOf();
     
-    const result = await db.pool.query("INSERT INTO tanks (id, name, description, waterType, image, stream, age) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [id, newTank.name, newTank.description, newTank.waterType, newTank.image, newTank.stream, newTank.age]);
+    const result = await db.pool.query("INSERT INTO tanks (id, name, description, type, image, stream, age) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [id, newTank.name, newTank.description, newTank.type, newTank.image, newTank.stream, newTank.age]);
     
     if(result[0].affectedRows === 1) {
         const newTank = await find(id);
