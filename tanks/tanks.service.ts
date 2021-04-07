@@ -2,6 +2,7 @@ import { stringify } from 'querystring';
 import { BaseTank, Tank, TankKeys } from './tank.interface';
 import { Tanks } from './tanks.interface';
 import { escape } from 'mysql2';
+import { v4 as uuid } from 'uuid';
 const db = require('../services/db');
 
 
@@ -17,19 +18,19 @@ function updatedProps(tankUpdate: BaseTank) {
 
 // Find all tanks service
 export const findAll = async(): Promise<Tanks> => {
-    const rows = await db.pool.query("SELECT id, name, description, type, image, stream FROM tanks");
+    const rows = await db.pool.query("SELECT BIN_TO_UUID(id) as id, name, description, type, image, stream FROM tanks");
     return rows[0];
 }
 // Find single by id tank service
-export const find = async(id:number): Promise<Tank> => {
-    const rows = await db.pool.query("SELECT * FROM tanks WHERE id = ?", [id]);
+export const find = async(id: string): Promise<Tank> => {
+    const rows = await db.pool.query("SELECT BIN_TO_UUID(id) as id, name, description, type, age FROM tanks WHERE id = UUID_TO_BIN(?)", [id]);
     return rows[0][0];
 }
 // Create Tank Service
 export const create = async(newTank: BaseTank): Promise<Tank | null> => {
-    const id = new Date().valueOf();
+    const id = uuid();
     
-    const result = await db.pool.query("INSERT INTO tanks (id, name, description, type, image, stream, age) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    const result = await db.pool.query("INSERT INTO tanks (id, name, description, type, image, stream, age) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, ?, ?)",
         [id, newTank.name, newTank.description, newTank.type, newTank.image, newTank.stream, newTank.age]);
     
     if(result[0].affectedRows === 1) {

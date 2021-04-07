@@ -38,7 +38,7 @@ authRouter.get('/logout', isAuthenticated, (req: Request, res: Response) => {
 });
 
 authRouter.get('/user', isAuthenticated, (req: Request ,res: Response) => {
-    console.log(`auth.router.ts /user`, req.user)
+    // console.log(`auth.router.ts /user`, req.user)
     if (req.user) {
         const userData = {
             display_name: req.user.display_name,
