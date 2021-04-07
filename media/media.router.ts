@@ -1,26 +1,9 @@
 import express, { Request, Response } from 'express';
 import formidable from 'formidable';
 import * as MediaService from './media.service';
-import * as fs from 'fs';
 import * as Helper from '../helper';
 
 export const mediaRouter = express.Router();
-
-// Moves image from tmp dir to IMG_DIRECTORY and renames with the filename, returns URL location of image on the filesystem
-const moveToUploads = async(tankID: string, file: formidable.File) => {
-
-    // Check if tankID directory already existsm synchronous because uploads are dependent on dir existing
-    if (!fs.existsSync(`${process.env.IMG_DIRECTORY}/${tankID}`)) {
-        // create directory for tankID
-        fs.mkdirSync(`${process.env.IMG_DIRECTORY}/${tankID}`);
-    }
-    
-    // Move file from tmp to IMG_DIRECTORY and give it the filename
-    fs.rename(file.path, `${process.env.IMG_DIRECTORY}/${tankID}/${file.name}`, (err) => {
-        if (err) throw err;
-        console.log(`${file.path} moved to ${process.env.IMG_DIRECTORY}/${tankID}/${file.name}`)
-    });
-}
 
 // GET images
 mediaRouter.get('/:id', async(req: Request, res: Response) => {
@@ -53,7 +36,7 @@ mediaRouter.post('/upload', async(req: Request, res: Response) => {
             const uploadedFiles = Object.keys(files);
             for (let i = 0; i < uploadedFiles.length; i++) {
                 let file = files[uploadedFiles[i]] as formidable.File;
-                moveToUploads(tankID as string, file);
+                MediaService.moveToUploads(tankID as string, file);
                 MediaService.addImage(tankID as string, `${process.env.IMG_DIRECTORY}/${tankID}/${file.name}`)
                 .then(res => console.log(res))
                 .catch(e => console.error(e));
