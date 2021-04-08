@@ -33,13 +33,13 @@ passport.use(
 passport.serializeUser(function(user: Express.User, done) {
     console.log(`inside seralizeUser`)
     console.log(user);
-    console.log(user.id);
-    done(null, user.id);
+    console.log(user.userID);
+    done(null, user.userID);
   });
   
   passport.deserializeUser(function(userId: number, done) {
       console.log(`inside deserailizeUser`);
-      UserSerivce.findWhere("id", userId)
+      UserSerivce.findWhere("userID", userId)
       .then(user => {
         console.log(`Found user: ${user}`);
         done(null, user);

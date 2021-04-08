@@ -55,7 +55,7 @@ tanksRouter.post('/addTank', async(req: Request, res: Response) => {
                 }
     
                 // console.log('field: ', fields);
-                console.log('files: ', files);
+                // console.log('files: ', files);
                 resolve({data: fields, images: files})
             
     
