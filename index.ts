@@ -9,6 +9,7 @@ import { tanksRouter } from './tanks/tanks.router';
 import { authRouter } from './auth/auth.router';
 import { isLoggedIn } from './middleware/auth.middleware';
 import userRouter from './users/user.router';
+import mediaRouter from './media/media.router';
 const session = require('express-session');
 
 if (!config.server.PORT) {
@@ -37,9 +38,10 @@ app.use(cors({
     methods: "GET,HEAD,PUT,POST,DELETE",
     credentials: true
 }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use("/api/tanks/", tanksRouter);
+app.use("/api/media/", mediaRouter);
 app.use("/auth/", authRouter);
 app.use("/user/", userRouter);
 

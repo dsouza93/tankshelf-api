@@ -10,7 +10,7 @@ export const findOrCreate = async(profile: Profile) => {
             // const newUser = await UserService.create(profile);
             const newUser = await UserService.create(profile)
             .then(res => {
-                const user = UserService.findWhere("id", res.insertId)
+                const user = UserService.findWhere("userID", res.insertId)
                 return user;
             });
             return newUser;
