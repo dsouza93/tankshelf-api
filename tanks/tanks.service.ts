@@ -32,7 +32,7 @@ export const find = async(id: number): Promise<Tank> => {
     return rows[0][0];
 }
 // Create Tank Service
-export const create = async(newTank: BaseTank, images: FormFields["images"]): Promise<any> => {
+export const create = async(newTank: BaseTank, images: FormFields["images"], userID: string): Promise<any> => {
     console.log('tanks.service create()');
     let tankID;
     const uploadImages = Object.keys(images);
@@ -40,8 +40,8 @@ export const create = async(newTank: BaseTank, images: FormFields["images"]): Pr
     try {
         await connection.beginTransaction();
 
-        const tankResult = await connection.query("INSERT INTO tanks (name, description, type, image, stream, age) VALUES (?, ?, ?, ?, ?, ?)",
-            [newTank.name, newTank.description, newTank.type, newTank.image, newTank.stream, newTank.age]);
+        const tankResult = await connection.query("INSERT INTO tanks (name, description, type, image, stream, age, userID) VALUES (?, ?, ?, ?, ?, ?, UUID_TO_BIN(?))",
+            [newTank.name, newTank.description, newTank.type, newTank.image, newTank.stream, newTank.age, userID]);
         
         tankID = tankResult[0].insertId;
         console.log('tankID: ', tankID);

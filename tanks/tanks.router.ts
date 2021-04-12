@@ -47,6 +47,7 @@ tanksRouter.put('/:id', async(req: Request, res: Response) => {
 // POST tanks
 tanksRouter.post('/addTank', async(req: Request, res: Response) => {
     try {
+        console.log('addTank endpoint: ', req.user.userID);
         const form = new formidable({ multiples: true });
         var formFields: FormFields = await new Promise((resolve, reject) => {
             form.parse(req, (err, fields, files) => {
@@ -65,7 +66,7 @@ tanksRouter.post('/addTank', async(req: Request, res: Response) => {
         console.log('creating NEW TANK')
         const tank: BaseTank = formFields.data;
         const images = formFields.images;
-        const newTank = await TankService.create(tank, images);
+        const newTank = await TankService.create(tank, images, req.user.userID);
         
         console.log('final newTank');
         console.log(newTank)

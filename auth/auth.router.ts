@@ -38,9 +38,12 @@ authRouter.get('/logout', isAuthenticated, (req: Request, res: Response) => {
 });
 
 authRouter.get('/user', isAuthenticated, (req: Request ,res: Response) => {
-    // console.log(`auth.router.ts /user`, req.user)
+    console.log(`auth.router.ts /user`, req.user)
+    console.log(req.user.userID)
+    console.log(req.session)
     if (req.user) {
         const userData = {
+            userID: req.user.userID,
             display_name: req.user.display_name,
             email: req.user.email,
             first_name: req.user.first_name,
