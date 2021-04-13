@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import passport from 'passport';
-import { isAuthenticated } from './auth.service';
+import { isAuthenticated } from '../middleware/auth.middleware';
 // Import passport authentication strategy
 require('./passport.auth');
 
