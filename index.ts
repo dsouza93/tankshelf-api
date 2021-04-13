@@ -7,7 +7,6 @@ import { v4 as uuid } from 'uuid';
 import { config } from './config';
 import { tanksRouter } from './tanks/tanks.router';
 import { authRouter } from './auth/auth.router';
-import { isLoggedIn } from './middleware/auth.middleware';
 import userRouter from './users/user.router';
 import mediaRouter from './media/media.router';
 const session = require('express-session');
@@ -44,10 +43,6 @@ app.use("/api/tanks/", tanksRouter);
 app.use("/api/media/", mediaRouter);
 app.use("/auth/", authRouter);
 app.use("/user/", userRouter);
-
-app.get('/failed', (req: Request, res: Response) => res.send('You failed to login'));
-app.get('/good', isLoggedIn, (req: Request, res: Response) => res.send(`Welcome ${req.user.displayName}`));
-
 
 app.listen(PORT, () => {
     console.log(`Server listening on port: ${PORT}`);
