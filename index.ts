@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import bodyParser from 'body-parser';
 import passport from 'passport';
 import { v4 as uuid } from 'uuid';
 import { config } from './config';
@@ -9,7 +8,7 @@ import { tanksRouter } from './tanks/tanks.router';
 import { authRouter } from './auth/auth.router';
 import userRouter from './users/user.router';
 import mediaRouter from './media/media.router';
-const session = require('express-session');
+import session from 'express-session';
 
 if (!config.server.PORT) {
     process.exit();
@@ -26,7 +25,7 @@ app.use(session({
     name: 'tankSesh',
     resave: false,
     saveUninitialized: true,
-    secret: config.auth.PASSPORT_SESSION_SECRET
+    secret: config.auth.PASSPORT_SESSION_SECRET as string
 }));
 
 
