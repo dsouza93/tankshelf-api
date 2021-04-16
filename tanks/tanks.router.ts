@@ -54,13 +54,15 @@ tanksRouter.post('/addTank', async(req: Request, res: Response) => {
                 if(err) {
                     return res.status(400).json({error: err.message});
                 }
-    
+
                 let tankData = {
                     name: fields.name as string,
                     type: fields.type as WaterTypes,
                     age: parseInt(fields.age as string),
                     description: fields.description as string,
-                    images: files
+                    images: files,
+                    inhabitants: JSON.parse(fields.inhabitants as string),
+                    plants: JSON.parse(fields.plants as string)
                 }
 
                 resolve(tankData)
@@ -88,3 +90,5 @@ tanksRouter.delete('/:id', async(req: Request, res: Response) => {
         res.status(500).send(e.message);
     }
 });
+
+export default tanksRouter;

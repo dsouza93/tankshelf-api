@@ -36,16 +36,40 @@ export const find = async(id: number): Promise<Tank> => {
 export const create = async(newTank: Tank, userID: string): Promise<any> => {
     console.log('tanks.service create()');
     let tankID;
+    // Pull out images to add to image tables
     const uploadImages = Object.keys(newTank.images);
+    // Pull out inhabitants contents
+    const inhabitants = newTank.inhabitants;
+    // Pull out plant contents
+    const plants = newTank.plants;
+
+    // Get Pool connection from DB for a SQL transaction
     const connection = await db.pool.getConnection();
     try {
         await connection.beginTransaction();
 
+        // Create tank first so we have a tankID to relate images and contents to
         const tankResult = await connection.query("INSERT INTO tanks (name, description, type, image, stream, age, userID) VALUES (?, ?, ?, ?, ?, ?, UUID_TO_BIN(?))",
             [newTank.name, newTank.description, newTank.type, newTank.image, newTank.stream, newTank.age, userID]);
         
         tankID = tankResult[0].insertId;
-        console.log('tankID: ', tankID);
+        
+        
+        // Create relation between tank and it's inhabitant contents
+        // console.log(inhabitants);
+        // console.log(plants)
+        for (let i=0; i < inhabitants.length; i++) {
+            const res = await connection.query("INSERT INTO tankshelf.tank_contents_fish (tankID, fishID) VALUES (?, ?)",
+                [tankID, inhabitants[i].fishID]);
+            console.log(res);
+        }
+
+        // Create relation between tank and it's plant contents
+        for (let i=0; i < plants.length; i++) {
+            const res = await connection.query("INSERT INTO tankshelf.tank_contents_plants (tankID, plantID) VALUES (?, ?)",
+                [tankID, plants[i].plantID]);
+            console.log(res);
+        }
 
         for (const [index, image] of uploadImages.entries()) {    
             const img = newTank.images[image] as Formidable.File
