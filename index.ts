@@ -4,11 +4,14 @@ import helmet from 'helmet';
 import passport from 'passport';
 import { v4 as uuid } from 'uuid';
 import { config } from './config';
-import { tanksRouter } from './tanks/tanks.router';
-import { authRouter } from './auth/auth.router';
+import tanksRouter from './tanks/tanks.router';
+import authRouter from './auth/auth.router';
 import userRouter from './users/user.router';
 import mediaRouter from './media/media.router';
+import plantsRouter from './plants/plants.router';
+import fishRouter from './fish/fish.router';
 import session from 'express-session';
+
 
 if (!config.server.PORT) {
     process.exit();
@@ -40,6 +43,8 @@ app.use(express.json());
 
 app.use("/api/tanks/", tanksRouter);
 app.use("/api/media/", mediaRouter);
+app.use("/api/plants/", plantsRouter);
+app.use("/api/fish/", fishRouter);
 app.use("/auth/", authRouter);
 app.use("/user/", userRouter);
 

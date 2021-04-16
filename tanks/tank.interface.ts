@@ -14,6 +14,8 @@ export interface BaseTank {
 export interface Tank extends BaseTank {
     tankID?: number;
     images: formidable.Files;
+    inhabitants?: any;
+    plants?: any;
 }
 
 export type TankKeys = keyof Tank;

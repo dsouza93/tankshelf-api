@@ -85,3 +85,4 @@ authRouter.get('/loggedin', isAuthenticated, (req: Request, res: Response) => {
 //     });
 // });
 
+export default authRouter;
