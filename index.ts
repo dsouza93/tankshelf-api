@@ -45,6 +45,7 @@ app.use("/api/tanks/", tanksRouter);
 app.use("/api/media/", mediaRouter);
 app.use("/api/plants/", plantsRouter);
 app.use("/api/fish/", fishRouter);
+// serve static local directory for images
 app.use("/media/tankshelf/uploads", express.static('/media/tankshelf/uploads/'));
 app.use("/auth/", authRouter);
 app.use("/user/", userRouter);
