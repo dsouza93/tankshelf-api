@@ -3,9 +3,10 @@ dotenv.config();
 
 export const config = {
     db: {
-        HOST: process.env.HOST,
+        HOST: process.env.SQL_HOST,
+        PORT: process.env.SQL_PORT,
         USER: process.env.SQL_USER,
-        PASSWORD: process.env.PASSWORD,
+        PASSWORD: process.env.SQL_PASSWORD,
         DATABASE: process.env.DATABASE,
     },
     server: {
