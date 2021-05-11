@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import Formidable from 'formidable';
 import formidable from 'formidable';
 import { BaseTank, Tank, TankKeys, WaterTypes } from './tank.interface';
-import { Tanks } from './tanks.interface';
+import { isAuthenticated } from '../middleware/auth.middleware';
 import * as TankService from './tanks.service';
 
 export const tanksRouter = express.Router();
@@ -34,7 +34,7 @@ tanksRouter.get('/:id', async(req: Request, res: Response) => {
 });
 
 // PUT tanks
-tanksRouter.put('/:id', async(req: Request, res: Response) => {
+tanksRouter.put('/:id', isAuthenticated, async(req: Request, res: Response) => {
     try {
         const id = parseInt(req.params.id, 10);
         const updatedTank = await TankService.update(id, req.body);
@@ -46,7 +46,7 @@ tanksRouter.put('/:id', async(req: Request, res: Response) => {
 });
 
 // POST tanks
-tanksRouter.post('/addTank', async(req: Request, res: Response) => {
+tanksRouter.post('/addTank', isAuthenticated, async(req: Request, res: Response) => {
     try {
         const form = new formidable({ multiples: true });
         var formFields: Tank = await new Promise((resolve, reject) => {
@@ -80,7 +80,7 @@ tanksRouter.post('/addTank', async(req: Request, res: Response) => {
     }
 });
 
-tanksRouter.delete('/:id', async(req: Request, res: Response) => {
+tanksRouter.delete('/:id', isAuthenticated, async(req: Request, res: Response) => {
     try {
         const id: number = parseInt(req.params.id, 10);
 
