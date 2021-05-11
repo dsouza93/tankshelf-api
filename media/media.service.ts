@@ -18,7 +18,7 @@ export const addImage = async(tankID: string, url: string): Promise<boolean> => 
 }
 
 export const findImages = async(tankID: number): Promise<any[]> => {
-    const result = await db.pool.query("SELECT url FROM tankshelf.images WHERE tankID = ?", [tankID]);
+    const result = await db.pool.query("SELECT url, imageID FROM tankshelf.images WHERE tankID = ?", [tankID]);
     console.log(result[0][0].url);
 
     return result[0];

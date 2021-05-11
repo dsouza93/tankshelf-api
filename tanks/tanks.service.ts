@@ -29,7 +29,7 @@ export const findAll = async(): Promise<Tanks> => {
 }
 // Find single by id tank service
 export const find = async(id: number): Promise<Tank> => {
-    const rows = await db.pool.query("SELECT tankID, name, description, type, age FROM tanks WHERE tankID = ?", [id]);
+    const rows = await db.pool.query("SELECT tankID, name, description, type, age, BIN_TO_UUID(userID) as userID FROM tanks WHERE tankID = ?", [id]);
     return rows[0][0];
 }
 // Create Tank Service

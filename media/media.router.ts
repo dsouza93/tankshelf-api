@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import formidable from 'formidable';
+import { isAuthenticated } from '../middleware/auth.middleware';
 import * as MediaService from './media.service';
-import * as Helper from '../helper';
 
 export const mediaRouter = express.Router();
 
@@ -9,7 +9,7 @@ export const mediaRouter = express.Router();
 mediaRouter.get('/:id', async(req: Request, res: Response) => {
     console.log('get api/media/:id');
     try {
-        const id = req.params.id;
+        const id = parseInt(req.params.id);
         const images = await MediaService.findImages(id);
 
         return res.status(200).json(images);
@@ -49,15 +49,15 @@ mediaRouter.post('/upload', async(req: Request, res: Response) => {
     }
 });
 
-// mediaRouter.delete('/:id', async(req: Request, res: Response) => {
-//     try {
-//         const id: number = parseInt(req.params.id, 10);
+mediaRouter.delete('/:id', isAuthenticated, async(req: Request, res: Response) => {
+    try {
+        const id: number = parseInt(req.params.id, 10);
 
-//         await TankService.remove(id);
-//         res.send(204);
-//     } catch(e) {
-//         res.status(500).send(e.message);
-//     }
-// });
+        await MediaService.remove(id);
+        res.send(204);
+    } catch(e) {
+        res.status(500).send(e.message);
+    }
+});
 
 export default mediaRouter;
