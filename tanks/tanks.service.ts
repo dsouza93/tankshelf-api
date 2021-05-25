@@ -48,7 +48,7 @@ export const create = async(newTank: Tank, userID: string): Promise<any> => {
     try {
         await connection.beginTransaction();
 
-        // Create tank first so we have a tankID to relate images and contents to
+        // Create tank so we have a tankID to relate images and contents to
         const tankResult = await connection.query("INSERT INTO tanks (name, description, type, image, stream, age, userID) VALUES (?, ?, ?, ?, ?, ?, UUID_TO_BIN(?))",
             [newTank.name, newTank.description, newTank.type, newTank.image, newTank.stream, newTank.age, userID]);
         
@@ -56,18 +56,16 @@ export const create = async(newTank: Tank, userID: string): Promise<any> => {
         
         
         // Create relation between tank and it's inhabitant contents
-        // console.log(inhabitants);
-        // console.log(plants)
         for (let i=0; i < inhabitants.length; i++) {
             const res = await connection.query("INSERT INTO tankshelf.tank_contents_fish (tankID, fishID) VALUES (?, ?)",
-                [tankID, inhabitants[i].fishID]);
+                [tankID, inhabitants[i].id]);
             console.log(res);
         }
 
         // Create relation between tank and it's plant contents
         for (let i=0; i < plants.length; i++) {
             const res = await connection.query("INSERT INTO tankshelf.tank_contents_plants (tankID, plantID) VALUES (?, ?)",
-                [tankID, plants[i].plantID]);
+                [tankID, plants[i].id]);
             console.log(res);
         }
 
@@ -89,7 +87,7 @@ export const create = async(newTank: Tank, userID: string): Promise<any> => {
 
     } catch (e) {
         console.log('An error occured: ')
-        console.error(e);
+        throw e;
         connection.rollback();
     } finally {
         connection.release();
