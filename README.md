@@ -30,6 +30,9 @@ be dependent on your local environment:
 
 Make sure that the IMG_DIRECTORY that is configured exists on the local machine. This is where images will be stored for the application.
 
+To install the required node packages run:
+	npm install
+
 Then to start the application run:
 	npm run dev
 
